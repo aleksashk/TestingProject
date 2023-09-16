@@ -56,10 +56,11 @@ public class SecurityController {
         if (userRepository.existsUserByEmail(signupRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different email");
         }
+        String hashed = passwordEncoder.encode(signupRequest.getPassword());
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
-        user.setPassword(signupRequest.getPassword());
+        user.setPassword(hashed);
         userRepository.save(user);
         return ResponseEntity.ok("Success, baby");
     }
